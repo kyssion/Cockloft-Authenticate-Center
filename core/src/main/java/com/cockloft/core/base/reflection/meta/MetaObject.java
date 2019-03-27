@@ -23,6 +23,7 @@ public class MetaObject {
     @SuppressWarnings("unchecked")
     private MetaObject(Object object, ObjectFactory objectFactory,
                        ObjectWrapperFactory objectWrapperFactory, ReflectorFactory reflectorFactory) {
+
         this.originalObject = object;
         this.objectFactory = objectFactory;
         this.objectWrapperFactory = objectWrapperFactory;
