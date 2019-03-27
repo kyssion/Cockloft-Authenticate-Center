@@ -15,7 +15,7 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 
 /**
- *
+ * 对reflector的一层封装
  */
 public class MetaClass {
 
