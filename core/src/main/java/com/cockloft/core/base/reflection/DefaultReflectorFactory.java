@@ -3,6 +3,9 @@ package com.cockloft.core.base.reflection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+/**
+ * 提供了一个Reflector的map,可以通过这个方法快速的添加class和Reflector的影身关系
+ */
 public class DefaultReflectorFactory implements ReflectorFactory {
     private boolean classCacheEnabled = true;
     private final ConcurrentMap<Class<?>, Reflector> reflectorMap = new ConcurrentHashMap<>();

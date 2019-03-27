@@ -44,6 +44,7 @@ public class Reflector {
 
     public Reflector(Class<?> clazz) {
         type = clazz;
+        //添加这个class的0参数构造方法
         addDefaultConstructor(clazz);
         addGetMethods(clazz);
         addSetMethods(clazz);
@@ -58,6 +59,10 @@ public class Reflector {
         }
     }
 
+    /**
+     * 初始化这个class的0 参数构造方法
+     * @param clazz
+     */
     private void addDefaultConstructor(Class<?> clazz) {
         Constructor<?>[] consts = clazz.getDeclaredConstructors();
         for (Constructor<?> constructor : consts) {
@@ -67,8 +72,13 @@ public class Reflector {
         }
     }
 
+    /**
+     * 简单点说就是拿到了当前类所有参数的getter方法
+     * @param cls
+     */
     private void addGetMethods(Class<?> cls) {
         Map<String, List<Method>> conflictingGetters = new HashMap<>();
+        //这里的处理方法江湖导致如果返回参数,函数名称,参数名称相同的时候
         Method[] methods = getClassMethods(cls);
         for (Method method : methods) {
             if (method.getParameterTypes().length > 0) {
@@ -84,6 +94,10 @@ public class Reflector {
         resolveGetterConflicts(conflictingGetters);
     }
 
+    /**
+     * 过滤方法,当一个值子类重写了父类的get方法.并且返回值使用的是父类的子类(发生了桥接方法)的时候
+     * @param conflictingGetters
+     */
     private void resolveGetterConflicts(Map<String, List<Method>> conflictingGetters) {
         for (Entry<String, List<Method>> entry : conflictingGetters.entrySet()) {
             Method winner = null;
@@ -122,6 +136,7 @@ public class Reflector {
     private void addGetMethod(String name, Method method) {
         if (isValidPropertyName(name)) {
             getMethods.put(name, new MethodInvoker(method));
+            //TODO 以后细看,这个东西涉及到java的类型体系,一篇博客https://www.jianshu.com/p/e8eeff12c306
             Type returnType = TypeParameterResolver.resolveReturnType(method, type);
             getTypes.put(name, typeToClass(returnType));
         }
@@ -129,6 +144,7 @@ public class Reflector {
 
     private void addSetMethods(Class<?> cls) {
         Map<String, List<Method>> conflictingSetters = new HashMap<>();
+        //这里的处理方法江湖导致如果返回参数,函数名称,参数名称相同的时候
         Method[] methods = getClassMethods(cls);
         for (Method method : methods) {
             String name = method.getName();
@@ -143,6 +159,7 @@ public class Reflector {
     }
 
     private void addMethodConflict(Map<String, List<Method>> conflictingMethods, String name, Method method) {
+        //筛选出所有的名称是name的方法
         List<Method> list = conflictingMethods.computeIfAbsent(name, k -> new ArrayList<>());
         list.add(method);
     }
@@ -160,8 +177,10 @@ public class Reflector {
                     match = setter;
                     break;
                 }
+                //如果setter方法实现了继承
                 if (exception == null) {
                     try {
+                        //何为更好,越是子类越好
                         match = pickBetterSetter(match, setter, propName);
                     } catch (ReflectionException e) {
                         // there could still be the 'best match'
@@ -178,6 +197,13 @@ public class Reflector {
         }
     }
 
+    /**
+     * 何为更好,越是子类越好
+     * @param setter1
+     * @param setter2
+     * @param property
+     * @return
+     */
     private Method pickBetterSetter(Method setter1, Method setter2, String property) {
         if (setter1 == null) {
             return setter2;
