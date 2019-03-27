@@ -31,11 +31,13 @@ public class MetaClass {
         return new MetaClass(type, reflectorFactory);
     }
 
+    //通过名称获取本身的一个field的MetaClass
     public MetaClass metaClassForProperty(String name) {
         Class<?> propType = reflector.getGetterType(name);
         return MetaClass.forClass(propType, reflectorFactory);
     }
 
+    //支持xxx.xxx.xxx这种格式
     public String findProperty(String name) {
         StringBuilder prop = buildProperty(name, new StringBuilder());
         return prop.length() > 0 ? prop.toString() : null;
