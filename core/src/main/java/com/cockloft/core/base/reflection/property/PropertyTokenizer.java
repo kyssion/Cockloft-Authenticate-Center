@@ -8,6 +8,11 @@ public class PropertyTokenizer implements Iterator<PropertyTokenizer> {
     private String index;
     private final String children;
 
+    /**
+     * 如果参数是这样的xxx[ppp].zzz -> name = xxx , index = ppp , indexname = xxx[ppp], children = zzz
+     * 如果参数是这样的xxx.zzz.ppp -> name = xxx , index = null , indexname = xxx, children = zzz.ppp
+     * @param fullname
+     */
     public PropertyTokenizer(String fullname) {
         int delim = fullname.indexOf('.');
         if (delim > -1) {

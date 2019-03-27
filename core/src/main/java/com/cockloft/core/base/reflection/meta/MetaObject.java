@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author Clinton Begin
+ * 本质上是针对O表决传统Wrapper的一层封装
  */
 public class MetaObject {
 
@@ -20,7 +20,8 @@ public class MetaObject {
     private final ObjectWrapperFactory objectWrapperFactory;
     private final ReflectorFactory reflectorFactory;
     @SuppressWarnings("unchecked")
-    private MetaObject(Object object, ObjectFactory objectFactory, ObjectWrapperFactory objectWrapperFactory, ReflectorFactory reflectorFactory) {
+    private MetaObject(Object object, ObjectFactory objectFactory,
+                       ObjectWrapperFactory objectWrapperFactory, ReflectorFactory reflectorFactory) {
         this.originalObject = object;
         this.objectFactory = objectFactory;
         this.objectWrapperFactory = objectWrapperFactory;
@@ -31,7 +32,6 @@ public class MetaObject {
         } else if (objectWrapperFactory.hasWrapperFor(object)) {
             this.objectWrapper = objectWrapperFactory.getWrapperFor(this, object);
         } else if (object instanceof Map) {
-
             this.objectWrapper = new MapWrapper(this, (Map<String,Object>) object);
         } else if (object instanceof Collection) {
             this.objectWrapper = new CollectionWrapper(this, (Collection) object);
@@ -40,7 +40,9 @@ public class MetaObject {
         }
     }
 
-    public static MetaObject forObject(Object object, ObjectFactory objectFactory, ObjectWrapperFactory objectWrapperFactory, ReflectorFactory reflectorFactory) {
+    public static MetaObject forObject(Object object, ObjectFactory objectFactory,
+                                       ObjectWrapperFactory objectWrapperFactory,
+                                       ReflectorFactory reflectorFactory) {
         if (object == null) {
             return SystemMetaObject.NULL_META_OBJECT;
         } else {

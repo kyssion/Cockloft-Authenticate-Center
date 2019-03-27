@@ -43,6 +43,12 @@ public class MetaClass {
         return prop.length() > 0 ? prop.toString() : null;
     }
 
+    /**
+     * 添加驼峰写法的过滤
+     * @param name
+     * @param useCamelCaseMapping
+     * @return
+     */
     public String findProperty(String name, boolean useCamelCaseMapping) {
         if (useCamelCaseMapping) {
             name = name.replace("_", "");

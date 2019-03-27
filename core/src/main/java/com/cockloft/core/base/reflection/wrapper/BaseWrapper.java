@@ -28,6 +28,12 @@ public abstract class BaseWrapper implements ObjectWrapper {
         }
     }
 
+    /**
+     * 不用考虑object的类型,获取prop 对象指定的变量对应的内容
+     * @param prop
+     * @param collection
+     * @return
+     */
     protected Object getCollectionValue(PropertyTokenizer prop, Object collection) {
         if (collection instanceof Map) {
             return ((Map) collection).get(prop.getIndex());
@@ -58,6 +64,13 @@ public abstract class BaseWrapper implements ObjectWrapper {
             }
         }
     }
+
+    /**
+     * 不用考虑collection的类型,为这个参数的prop指定的参数名称的变量初始化变量
+     * @param prop
+     * @param collection
+     * @param value
+     */
     @SuppressWarnings("unchecked")
     protected void setCollectionValue(PropertyTokenizer prop, Object collection, Object value) {
         if (collection instanceof Map) {

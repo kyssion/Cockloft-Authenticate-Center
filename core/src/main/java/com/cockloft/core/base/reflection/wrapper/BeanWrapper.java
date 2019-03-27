@@ -12,7 +12,7 @@ import com.cockloft.core.base.reflection.property.PropertyTokenizer;
 import java.util.List;
 
 /**
- * @author Clinton Begin
+ * 本质上是针对metaClass的一层封装
  */
 public class BeanWrapper extends BaseWrapper {
 
