@@ -19,6 +19,7 @@ public class MetaObject {
     private final ObjectFactory objectFactory;
     private final ObjectWrapperFactory objectWrapperFactory;
     private final ReflectorFactory reflectorFactory;
+
     @SuppressWarnings("unchecked")
     private MetaObject(Object object, ObjectFactory objectFactory,
                        ObjectWrapperFactory objectWrapperFactory, ReflectorFactory reflectorFactory) {
@@ -32,7 +33,7 @@ public class MetaObject {
         } else if (objectWrapperFactory.hasWrapperFor(object)) {
             this.objectWrapper = objectWrapperFactory.getWrapperFor(this, object);
         } else if (object instanceof Map) {
-            this.objectWrapper = new MapWrapper(this, (Map<String,Object>) object);
+            this.objectWrapper = new MapWrapper(this, (Map<String, Object>) object);
         } else if (object instanceof Collection) {
             this.objectWrapper = new CollectionWrapper(this, (Collection) object);
         } else {
