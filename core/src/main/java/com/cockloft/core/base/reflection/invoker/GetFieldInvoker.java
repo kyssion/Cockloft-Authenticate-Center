@@ -3,7 +3,6 @@ package com.cockloft.core.base.reflection.invoker;
 import com.cockloft.core.base.reflection.Reflector;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 
 public class GetFieldInvoker implements Invoker {
     private final Field field;
