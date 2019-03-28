@@ -15,7 +15,7 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 
 /**
- * 对reflector的一层封装
+ * 对reflector的一层封装,更加方便的获取一个Class对象中geter和setter的各种信息
  */
 public class MetaClass {
 

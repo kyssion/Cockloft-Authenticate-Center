@@ -1,5 +1,7 @@
 package com.cockloft.core.base.reflection.meta;
 
+import com.cockloft.core.base.reflection.DefaultReflectorFactory;
+import com.cockloft.core.base.reflection.object.DefaultObjectFactory;
 import com.cockloft.core.base.reflection.object.ObjectFactory;
 import com.cockloft.core.base.reflection.property.PropertyTokenizer;
 import com.cockloft.core.base.reflection.wrapper.*;
@@ -40,6 +42,10 @@ public class MetaObject {
         } else {
             this.objectWrapper = new BeanWrapper(this, object);
         }
+    }
+
+    public static MetaObject forObject(Object object){
+        return forObject(object,new DefaultObjectFactory(),new DefaultObjectWrapperFactory(),new DefaultReflectorFactory());
     }
 
     public static MetaObject forObject(Object object, ObjectFactory objectFactory,
