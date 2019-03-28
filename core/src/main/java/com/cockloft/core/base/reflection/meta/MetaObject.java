@@ -44,8 +44,8 @@ public class MetaObject {
         }
     }
 
-    public static MetaObject forObject(Object object){
-        return forObject(object,new DefaultObjectFactory(),new DefaultObjectWrapperFactory(),new DefaultReflectorFactory());
+    public static MetaObject forObject(Object object) {
+        return forObject(object, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(), new DefaultReflectorFactory());
     }
 
     public static MetaObject forObject(Object object, ObjectFactory objectFactory,
@@ -117,8 +117,8 @@ public class MetaObject {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T getValue(String name,Class<T> type) {
-        return (T)getValue(name);
+    public <T> T getValue(String name, Class<T> type) {
+        return (T) getValue(name);
     }
 
     public void setValue(String name, Object value) {
