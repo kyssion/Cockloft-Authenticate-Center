@@ -1,14 +1,23 @@
 package com.cockloft.core.test;
 
-import com.cockloft.core.base.reflection.DefaultReflectorFactory;
-import com.cockloft.core.base.reflection.Reflector;
-import com.cockloft.core.base.reflection.meta.MetaClass;
+import com.cockloft.core.base.reflection.meta.MetaObject;
 
 public class RouterTest {
     public static void main(String[] args) {
-        Reflector reflector = new Reflector(Supper.class);
-        String name=MetaClass.forClass(TestTTT.class,new DefaultReflectorFactory()).findProperty("test.supper.number");
-        System.out.println(name);
+        Supper base = new Supper();
+        base.setIsup(false);
+        base.setNumber(123);
+        Test test = new Test();
+        test.setSupper(base);
+        TestTTT testTTT = new TestTTT();
+        testTTT.setTest(test);
+        MetaObject metaObject = MetaObject.forObject(testTTT);
+        String[] name  = metaObject.getGetterNames();
+        for(String string : name){
+            System.out.println(string);
+        }
+        Number number=metaObject.getValue("test.supper.number",Number.class);
+        System.out.println(number);
     }
 }
 class Base {

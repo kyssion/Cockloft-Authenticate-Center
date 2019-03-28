@@ -116,6 +116,11 @@ public class MetaObject {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public <T> T getValue(String name,Class<T> type) {
+        return (T)getValue(name);
+    }
+
     public void setValue(String name, Object value) {
         PropertyTokenizer prop = new PropertyTokenizer(name);
         if (prop.hasNext()) {

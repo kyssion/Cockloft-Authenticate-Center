@@ -12,7 +12,7 @@ import com.cockloft.core.base.reflection.property.PropertyTokenizer;
 import java.util.List;
 
 /**
- * 本质上是针对metaClass的一层封装
+ * 本质上是针对metaClass的一层封装,没有解决层级获取的问题
  */
 public class BeanWrapper extends BaseWrapper {
 
