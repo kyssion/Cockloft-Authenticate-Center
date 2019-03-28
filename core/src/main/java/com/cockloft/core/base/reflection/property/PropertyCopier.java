@@ -37,5 +37,4 @@ public final class PropertyCopier {
             parent = parent.getSuperclass();
         }
     }
-
 }
