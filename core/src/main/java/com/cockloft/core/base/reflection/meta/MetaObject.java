@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 本质上是针对O表决传统Wrapper的一层封装
+ * 本质上是针对O表决传统Wrapper的一层封装,额外提供了字符串名称解析的能力
  */
 public class MetaObject {
 

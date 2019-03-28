@@ -16,6 +16,7 @@ import java.util.Collection;
 
 /**
  * 对reflector的一层封装,更加方便的获取一个Class对象中geter和setter的各种信息
+ * 相比较MetaObject class 是提供了name级别的层级解析功能
  */
 public class MetaClass {
 
