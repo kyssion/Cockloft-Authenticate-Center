@@ -21,6 +21,9 @@ public class TestSql {
         properties.load(in);
         druidDataSource.configFromPropety(properties);
         SQLClient client = JDBCClient.create(vertx, druidDataSource);
+        client.getConnection(res->{
+
+        });
         client.query("SELECT * FROM App", ar -> {
             if (ar.succeeded()) {
                 ResultSet result = ar.result();
