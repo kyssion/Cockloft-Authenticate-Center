@@ -10,7 +10,7 @@ public class SqlData {
     private String sql;
     private Map<String,String> params;
     private Map<String,Class<?>> paramsType;
-
+    private ReturnParam returnParam;
     public String getSql() {
         return sql;
     }
