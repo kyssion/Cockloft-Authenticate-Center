@@ -17,7 +17,7 @@ public class RefenceTest {
         testItem.setName("lislsi");
         map.put("item", testItem);
         String json = mapper.writeValueAsString(map);
-        Map<String, TestItem> map1 = mapper.readValue(json, new TypeReference<Object>(){});
+        Map<String, TestItem> map1 = mapper.readValue(json, new TypeReference< HashMap<String, TestItem>>(){});
         System.out.println(map1.get("item").getName());
     }
 }
