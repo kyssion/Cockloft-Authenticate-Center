@@ -12,7 +12,7 @@ public class ReflectorInfo {
         item.setItem2(item2);
         item.setName("name");
         item.setAge("333");
-        VertxTypeConversion<Item,ResultSet> vertxTypeConversion = new VertxTypeConversion<>(item);
+        VertxTypeConversion<Item,ResultSet> vertxTypeConversion = new VertxTypeConversion<>();
         item = vertxTypeConversion.concersion(new ResultSet());
         System.out.println(item.getName());
     }

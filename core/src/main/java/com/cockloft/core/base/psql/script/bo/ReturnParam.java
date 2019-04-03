@@ -5,7 +5,7 @@ import com.cockloft.core.base.psql.script.conversion.TypeConversion;
 
 public class ReturnParam<T,S> {
     private Class<T> returnParamType;
-    private T returnParamInfo;
+    private T result;
     private TypeConversion<T,S> tsTypeConversion;
 
     public TypeConversion<T, S> getTsTypeConversion() {
@@ -24,11 +24,11 @@ public class ReturnParam<T,S> {
         this.returnParamType = returnParamType;
     }
 
-    public T getReturnParamInfo() {
-        return returnParamInfo;
+    public T getResult() {
+        return result;
     }
 
-    public void setReturnParamInfo(T returnParamInfo) {
-        this.returnParamInfo = returnParamInfo;
+    public void setResult(T result) {
+        this.result = result;
     }
 }

@@ -1,6 +1,7 @@
 package com.cockloft.core.test;
 
 import com.cockloft.core.base.reflection.meta.MetaObject;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 public class RouterTest {
     public static void main(String[] args) {
@@ -12,14 +13,16 @@ public class RouterTest {
         TestTTT testTTT = new TestTTT();
         testTTT.setTest(test);
         MetaObject metaObject = MetaObject.forObject(testTTT);
-        String[] name  = metaObject.getGetterNames();
-        for(String string : name){
+        String[] name = metaObject.getGetterNames();
+        for (String string : name) {
             System.out.println(string);
         }
-        Number number=metaObject.getValue("test.supper.number",Number.class);
+        Number number = metaObject.getValue("test.supper.number", new TypeReference<Number>() {
+        });
         System.out.println(number);
     }
 }
+
 class Base {
     private Number number;
     private boolean isup;
@@ -40,13 +43,14 @@ class Base {
         this.number = number;
     }
 }
-class Supper extends Base{
-    public Integer getNumber(){
+
+class Supper extends Base {
+    public Integer getNumber() {
         return (Integer) super.getNumber();
     }
 }
 
-class Test{
+class Test {
     private Supper supper;
 
     public Supper getSupper() {
@@ -58,7 +62,7 @@ class Test{
     }
 }
 
-class TestTTT{
+class TestTTT {
     private Test test;
 
     private String hhh;

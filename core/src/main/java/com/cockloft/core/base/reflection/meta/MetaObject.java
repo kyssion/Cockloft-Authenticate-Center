@@ -6,6 +6,7 @@ import com.cockloft.core.base.reflection.object.ObjectFactory;
 import com.cockloft.core.base.reflection.property.PropertyTokenizer;
 import com.cockloft.core.base.reflection.wrapper.*;
 import com.cockloft.core.base.reflection.ReflectorFactory;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.Collection;
 import java.util.List;
@@ -118,7 +119,7 @@ public class MetaObject {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T getValue(String name, Class<T> type) {
+    public <T> T getValue(String name, TypeReference type) {
         return (T) getValue(name);
     }
 
