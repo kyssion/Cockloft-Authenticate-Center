@@ -31,4 +31,8 @@ public class ReturnParam<T,S> {
     public void setResult(T result) {
         this.result = result;
     }
+
+    public T conversion(S s){
+        return this.tsTypeConversion.concersion(s);
+    }
 }

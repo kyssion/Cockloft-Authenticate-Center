@@ -119,11 +119,6 @@ public class MetaObject {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T getValue(String name, TypeReference type) {
-        return (T) getValue(name);
-    }
-
-    @SuppressWarnings("unchecked")
     public <T> T getValue(String name,Class<T> item){
         return (T) getValue(name);
     }

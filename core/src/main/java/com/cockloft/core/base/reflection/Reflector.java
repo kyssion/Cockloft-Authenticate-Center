@@ -34,12 +34,13 @@ public class Reflector {
     private final Class<?> type;
     private final String[] readablePropertyNames;
     private final String[] writeablePropertyNames;
+    private final Map<String, List<Invoker>> allMethod = new HashMap<>();
     private final Map<String, Invoker> setMethods = new HashMap<>();
     private final Map<String, Invoker> getMethods = new HashMap<>();
     private final Map<String, Class<?>> setTypes = new HashMap<>();
     private final Map<String, Class<?>> getTypes = new HashMap<>();
     private Constructor<?> defaultConstructor;
-
+    private Constructor<?>[] otherConstructor;
     private Map<String, String> caseInsensitivePropertyMap = new HashMap<>();
 
     public Reflector(Class<?> clazz) {
@@ -49,6 +50,7 @@ public class Reflector {
         addGetMethods(clazz);
         addSetMethods(clazz);
         addFields(clazz);
+        addAllMethods(clazz);
         readablePropertyNames = getMethods.keySet().toArray(new String[getMethods.keySet().size()]);
         writeablePropertyNames = setMethods.keySet().toArray(new String[setMethods.keySet().size()]);
 
@@ -64,19 +66,26 @@ public class Reflector {
 
     /**
      * 初始化这个class的0 参数构造方法
+     *
      * @param clazz
      */
     private void addDefaultConstructor(Class<?> clazz) {
         Constructor<?>[] consts = clazz.getDeclaredConstructors();
+        otherConstructor = new Constructor[consts.length - 1];
+        int index = 0;
         for (Constructor<?> constructor : consts) {
             if (constructor.getParameterTypes().length == 0) {
                 this.defaultConstructor = constructor;
+            } else {
+                otherConstructor[index] = constructor;
+                index++;
             }
         }
     }
 
     /**
      * 简单点说就是拿到了当前类所有参数的getter方法
+     *
      * @param cls
      */
     private void addGetMethods(Class<?> cls) {
@@ -99,6 +108,7 @@ public class Reflector {
 
     /**
      * 过滤方法,当一个值子类重写了父类的get方法.并且返回值使用的是父类的子类(发生了桥接方法)的时候
+     *
      * @param conflictingGetters
      */
     private void resolveGetterConflicts(Map<String, List<Method>> conflictingGetters) {
@@ -138,6 +148,7 @@ public class Reflector {
 
     /**
      * 添加所有可用的get方法
+     *
      * @param name
      * @param method
      */
@@ -152,6 +163,7 @@ public class Reflector {
 
     /**
      * 添加所有可用的set方法
+     *
      * @param cls
      */
     private void addSetMethods(Class<?> cls) {
@@ -170,8 +182,28 @@ public class Reflector {
         resolveSetterConflicts(conflictingSetters);
     }
 
+    private void addAllMethods(Class<?> cls) {
+        Map<String, List<Invoker>> conflictingSetters = new HashMap<>();
+        Method[] methods = getClassMethods(cls);
+        for (Method method : methods) {
+            String name = method.getName();
+            addInvoice(conflictingSetters,name,method);
+        }
+
+    }
+
+    private void addInvoice(Map<String, List<Invoker>> conflictingSetters, String name, Method method) {
+        if(conflictingSetters.containsKey(name)){
+            conflictingSetters.put(name,new ArrayList<>());
+        }
+        Invoker invoker = new MethodInvoker(method);
+        conflictingSetters.get(name).add(invoker);
+    }
+
+
     /**
      * 筛选出这一个参数名称中对应的所有方法列表
+     *
      * @param conflictingMethods
      * @param name
      * @param method
@@ -184,6 +216,7 @@ public class Reflector {
 
     /**
      * 校验setter参数的各种属性是否真的可靠,符合javabean的标准,并且处理了如果参数是子类型的情况
+     *
      * @param conflictingSetters
      */
     private void resolveSetterConflicts(Map<String, List<Method>> conflictingSetters) {
@@ -221,6 +254,7 @@ public class Reflector {
 
     /**
      * 选择一个更好的setter方法,何为更好,越是子类越好
+     *
      * @param setter1
      * @param setter2
      * @param property
@@ -244,6 +278,7 @@ public class Reflector {
 
     /**
      * 添加参数对应的setter方法
+     *
      * @param name
      * @param method
      */
@@ -257,6 +292,7 @@ public class Reflector {
 
     /**
      * 将type转化成class对象,重点处理泛型相关的问题
+     *
      * @param src
      * @return
      */
@@ -282,7 +318,8 @@ public class Reflector {
     }
 
     /**
-     * 添加所有getter或者setter对应的变量
+     * 添加所有没有getter或者setter的变量
+     *
      * @param clazz
      */
     private void addFields(Class<?> clazz) {
@@ -310,6 +347,7 @@ public class Reflector {
 
     /**
      * 添加setter的方法
+     *
      * @param field
      */
     private void addSetField(Field field) {
@@ -322,6 +360,7 @@ public class Reflector {
 
     /**
      * 添加getter的方法
+     *
      * @param field
      */
     private void addGetField(Field field) {
@@ -334,6 +373,7 @@ public class Reflector {
 
     /**
      * 判断是否是一个有效的变量名称 $ 表示内部类
+     *
      * @param name
      * @return
      */
@@ -343,7 +383,7 @@ public class Reflector {
 
     /**
      * 此方法返回一个数组，其中包含此类和任何超类中声明的所有方法。
-     * 我们使用此方法，而不是更简单的Class.getMethods（），因为我们也想查找私有方法。
+     *  我们使用此方法，而不是更简单的Class.getMethods（），因为我们也想查找私有方法。
      *
      * @param cls The class
      * @return An array containing all methods in this class
@@ -371,6 +411,7 @@ public class Reflector {
 
     /**
      * 以优先为上的原则,添加新的反方法进合并map
+     *
      * @param uniqueMethods
      * @param methods
      */
@@ -390,6 +431,7 @@ public class Reflector {
 
     /**
      * 获得我们自己定义的一组method方法标签 返回值#方法名称:参数1,参数2,....
+     *
      * @param method
      * @return
      */
@@ -453,6 +495,7 @@ public class Reflector {
 
     /**
      * 获得set方法封装
+     *
      * @param propertyName
      * @return
      */
@@ -466,6 +509,7 @@ public class Reflector {
 
     /**
      * 获得get方法封装
+     *
      * @param propertyName
      * @return
      */
@@ -539,5 +583,9 @@ public class Reflector {
 
     public String findPropertyName(String name) {
         return caseInsensitivePropertyMap.get(name.toUpperCase(Locale.ENGLISH));
+    }
+
+    public Constructor<?>[] getOtherConstructor() {
+        return otherConstructor;
     }
 }

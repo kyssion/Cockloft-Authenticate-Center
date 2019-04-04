@@ -2,21 +2,27 @@ package com.cockloft.core.base.reflection.invoker;
 
 import com.cockloft.core.base.reflection.Reflector;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class MethodInvoker implements Invoker {
 
     private final Class<?> type;
+    private final Class<?> returnType;
+    private final Class<?>[] paramType;
     private final Method method;
+    private final Annotation[] annotations;
 
     public MethodInvoker(Method method) {
         this.method = method;
-
-        if (method.getParameterTypes().length == 1) {
-            type = method.getParameterTypes()[0];
+        paramType= method.getParameterTypes();
+        returnType = method.getReturnType();
+        this.annotations = method.getAnnotations();
+        if (paramType.length == 1) {
+            type = paramType[0];
         } else {
-            type = method.getReturnType();
+            type = returnType;
         }
     }
     /**
@@ -43,5 +49,20 @@ public class MethodInvoker implements Invoker {
     @Override
     public Class<?> getType() {
         return type;
+    }
+
+    @Override
+    public Class<?>[] getParamType() {
+        return this.paramType;
+    }
+
+    @Override
+    public Class<?> getReturnType() {
+        return this.returnType;
+    }
+
+    @Override
+    public Annotation[] getAllAnnotation() {
+        return this.annotations;
     }
 }

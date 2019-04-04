@@ -2,13 +2,22 @@ package com.cockloft.core.base.reflection.invoker;
 
 import com.cockloft.core.base.reflection.Reflector;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 public class GetFieldInvoker implements Invoker {
     private final Field field;
+    private final Class<?> returnType;
+    private final Class<?> type;
+    private final Class<?>[] paramType;
+    private final Annotation[] annotations;
 
     public GetFieldInvoker(Field field) {
         this.field = field;
+        this.type = field.getType();
+        this.paramType = new Class[]{type};
+        this.returnType = type;
+        this.annotations= field.getAnnotations();
     }
 
     /**
@@ -34,6 +43,21 @@ public class GetFieldInvoker implements Invoker {
 
     @Override
     public Class<?> getType() {
-        return field.getType();
+        return this.type;
+    }
+
+    @Override
+    public Class<?>[] getParamType() {
+        return this.paramType;
+    }
+
+    @Override
+    public Class<?> getReturnType() {
+        return this.returnType;
+    }
+
+    @Override
+    public Annotation[] getAllAnnotation() {
+        return this.annotations;
     }
 }

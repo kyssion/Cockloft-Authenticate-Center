@@ -1,11 +1,15 @@
-package com.cockloft.core.base.psql.script.conversion;
+package com.cockloft.core.base.psql.script.builder;
+
+import com.cockloft.core.base.psql.script.conversion.TypeConversion;
+import com.cockloft.core.base.psql.script.conversion.VertxTypeConversion;
 
 import java.sql.ResultSet;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DefaultTypeConversionFactory implements TypeConversionFactory {
+public class DefaultTypeConversionBuilder implements TypeConversionBuilder{
 
-    private ConcurrentHashMap<Class,TypeConversion> cache = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Class, TypeConversion> cache =
+            new ConcurrentHashMap<>();
 
     @Override
     public <T, S> TypeConversion<T, S> create(T t, S s) {
@@ -17,7 +21,6 @@ public class DefaultTypeConversionFactory implements TypeConversionFactory {
             cache.put(t.getClass(),new VertxTypeConversion());
             return conversion;
         }
-
         return null;
     }
 }
