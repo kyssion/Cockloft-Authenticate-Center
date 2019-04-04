@@ -17,9 +17,17 @@ public class MapWrapper extends BaseWrapper {
 
     private final Map<String, Object> map;
 
+    private final Class<?> type;
+
     public MapWrapper(MetaObject metaObject, Map<String, Object> map) {
         super(metaObject);
         this.map = map;
+        this.type= map.getClass();
+    }
+
+    @Override
+    public Class<?> getType() {
+        return this.type;
     }
 
     @Override
@@ -139,6 +147,11 @@ public class MapWrapper extends BaseWrapper {
     @Override
     public <E> void addAll(List<E> element) {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Object invoke(String name, Object[] params) {
+        return null;
     }
 
 }

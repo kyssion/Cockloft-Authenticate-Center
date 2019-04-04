@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface ObjectWrapper {
 
+    Class<?> getType();
+
     Object get(PropertyTokenizer prop);
 
     void set(PropertyTokenizer prop, Object value);
@@ -37,4 +39,5 @@ public interface ObjectWrapper {
 
     <E> void addAll(List<E> element);
 
+    Object invoke(String name, Object[] params);
 }

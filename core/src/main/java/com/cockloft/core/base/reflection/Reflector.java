@@ -27,7 +27,7 @@ import com.cockloft.core.base.reflection.property.PropertyNamer;
 import com.cockloft.core.base.reflection.property.TypeParameterResolver;
 
 /**
- * 相当一层代理,将所有的class类抽象成Reflector
+ * 相当一层代理,将所有的class类(非集合数组类型)抽象成Reflector
  */
 public class Reflector {
 
@@ -71,14 +71,18 @@ public class Reflector {
      */
     private void addDefaultConstructor(Class<?> clazz) {
         Constructor<?>[] consts = clazz.getDeclaredConstructors();
-        otherConstructor = new Constructor[consts.length - 1];
-        int index = 0;
         for (Constructor<?> constructor : consts) {
             if (constructor.getParameterTypes().length == 0) {
                 this.defaultConstructor = constructor;
-            } else {
-                otherConstructor[index] = constructor;
-                index++;
+            }
+        }
+        if (consts.length > 0) {
+            otherConstructor = new Constructor[consts.length - (defaultConstructor == null ? 0 : 1)];
+            int index = 0;
+            for (Constructor<?> constructor : consts) {
+                if (constructor.getParameterTypes().length > 0) {
+                    this.otherConstructor[index] = constructor;
+                }
             }
         }
     }
@@ -183,18 +187,16 @@ public class Reflector {
     }
 
     private void addAllMethods(Class<?> cls) {
-        Map<String, List<Invoker>> conflictingSetters = new HashMap<>();
         Method[] methods = getClassMethods(cls);
         for (Method method : methods) {
             String name = method.getName();
-            addInvoice(conflictingSetters,name,method);
+            addInvoice(allMethod, name, method);
         }
-
     }
 
     private void addInvoice(Map<String, List<Invoker>> conflictingSetters, String name, Method method) {
-        if(conflictingSetters.containsKey(name)){
-            conflictingSetters.put(name,new ArrayList<>());
+        if (!conflictingSetters.containsKey(name)) {
+            conflictingSetters.put(name, new ArrayList<>());
         }
         Invoker invoker = new MethodInvoker(method);
         conflictingSetters.get(name).add(invoker);

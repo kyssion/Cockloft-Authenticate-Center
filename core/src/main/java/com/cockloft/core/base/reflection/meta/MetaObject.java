@@ -46,6 +46,10 @@ public class MetaObject {
         }
     }
 
+    public Class<?> getType(){
+        return this.objectWrapper.getType();
+    }
+
     public static MetaObject forObject(Object object) {
         return forObject(object, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(), new DefaultReflectorFactory());
     }
@@ -104,6 +108,11 @@ public class MetaObject {
         return objectWrapper.hasGetter(name);
     }
 
+    @SuppressWarnings("unchecked")
+    public <T> T getValue(String name,Class<T> item){
+        return (T) getValue(name);
+    }
+
     public Object getValue(String name) {
         PropertyTokenizer prop = new PropertyTokenizer(name);
         if (prop.hasNext()) {
@@ -116,11 +125,6 @@ public class MetaObject {
         } else {
             return objectWrapper.get(prop);
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> T getValue(String name,Class<T> item){
-        return (T) getValue(name);
     }
 
     public void setValue(String name, Object value) {
@@ -138,6 +142,24 @@ public class MetaObject {
             metaValue.setValue(prop.getChildren(), value);
         } else {
             objectWrapper.set(prop, value);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> T invoke(String name,Class<T> item,Object...params){
+        return (T)invoke(name,params);
+    }
+    public Object invoke(String name,Object...params){
+        PropertyTokenizer prop = new PropertyTokenizer(name);
+        if (prop.hasNext()) {
+            MetaObject metaValue = metaObjectForProperty(prop.getIndexedName());
+            if (metaValue == SystemMetaObject.NULL_META_OBJECT) {
+                return null;
+            } else {
+                return metaValue.invoke(prop.getChildren(),params);
+            }
+        } else {
+            return objectWrapper.invoke(name,params);
         }
     }
 

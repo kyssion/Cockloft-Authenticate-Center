@@ -1,6 +1,12 @@
 package com.cockloft.core.test;
 
 import com.cockloft.core.base.reflection.meta.MetaObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class RouterTest {
     public static void main(String[] args) {
@@ -18,6 +24,14 @@ public class RouterTest {
         }
         Number number = metaObject.getValue("test.supper.number", Number.class);
         System.out.println(number);
+        Object one = new String("123");
+        Object two = new String("333");
+        Map<Class<?>,Object> classObjectMap = new HashMap<>();
+        classObjectMap.put(one.getClass(),one);
+        classObjectMap.put(two.getClass(),two);
+        System.out.println(classObjectMap.size());
+        System.out.println(classObjectMap.get(one.getClass()));
+        System.out.println(one.getClass()==String.class);
     }
 }
 

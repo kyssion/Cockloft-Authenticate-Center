@@ -3,6 +3,9 @@ package com.cockloft.core.test;
 import com.cockloft.core.base.psql.script.conversion.VertxTypeConversion;
 import io.vertx.ext.sql.ResultSet;
 
+import java.util.Map;
+import java.util.Set;
+
 public class ReflectorInfo {
     public static void main(String[] args) {
         Item2 item2 = new Item2();

@@ -9,6 +9,7 @@ import com.cockloft.core.base.reflection.meta.MetaObject;
 import com.cockloft.core.base.reflection.meta.SystemMetaObject;
 import com.cockloft.core.base.reflection.property.PropertyTokenizer;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -17,12 +18,18 @@ import java.util.List;
 public class BeanWrapper extends BaseWrapper {
 
     private final Object object;
+
     private final MetaClass metaClass;
 
     public BeanWrapper(MetaObject metaObject, Object object) {
         super(metaObject);
         this.object = object;
         this.metaClass = MetaClass.forClass(object.getClass(), metaObject.getReflectorFactory());
+    }
+
+    @Override
+    public Class<?> getType() {
+        return this.metaClass.getType();
     }
 
     @Override
@@ -142,6 +149,31 @@ public class BeanWrapper extends BaseWrapper {
         return metaValue;
     }
 
+    @Override
+    public Object invoke(String name, Object[] params) {
+        return doInvoke(name, params, object);
+    }
+
+    public Object doInvoke(String name, Object[] params, Object object) {
+        Class<?>[] metaParams = new Class[params.length];
+        for (int index = 0; index < params.length; index++) {
+            //metaParams[index] = MetaObject.forObject(params).getType();
+            metaParams[index] = params[index].getClass();
+        }
+        try {
+            Invoker method = metaClass.getMethod(name, metaParams);
+            try {
+                return method.invoke(object, params);
+            } catch (Throwable t) {
+                throw ExceptionUtil.unwrapThrowable(t);
+            }
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Throwable t) {
+            throw new ReflectionException("Could not get property '" + name + "' from " + object.getClass() + ".  Cause: " + t.toString(), t);
+        }
+    }
+
     private Object getBeanProperty(PropertyTokenizer prop, Object object) {
         try {
             Invoker method = metaClass.getGetInvoker(prop.getName());
@@ -185,6 +217,5 @@ public class BeanWrapper extends BaseWrapper {
     public <E> void addAll(List<E> list) {
         throw new UnsupportedOperationException();
     }
-
 }
 

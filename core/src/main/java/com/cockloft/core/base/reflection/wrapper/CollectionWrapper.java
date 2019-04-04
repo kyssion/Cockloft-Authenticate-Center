@@ -9,10 +9,18 @@ import java.util.List;
 
 public class CollectionWrapper implements ObjectWrapper {
 
+    private final Class<?> type;
+
     private final Collection<Object> object;
 
     public CollectionWrapper(MetaObject metaObject, Collection<Object> object) {
         this.object = object;
+        this.type=object.getClass();
+    }
+
+    @Override
+    public Class<?> getType() {
+        return this.type;
     }
 
     @Override
@@ -78,6 +86,11 @@ public class CollectionWrapper implements ObjectWrapper {
     @Override
     public <E> void addAll(List<E> element) {
         object.addAll(element);
+    }
+
+    @Override
+    public Object invoke(String name, Object[] params) {
+        return null;
     }
 
 }

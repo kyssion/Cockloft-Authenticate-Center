@@ -7,12 +7,15 @@ import com.cockloft.core.base.reflection.invoker.GetFieldInvoker;
 import com.cockloft.core.base.reflection.invoker.Invoker;
 import com.cockloft.core.base.reflection.invoker.MethodInvoker;
 import com.cockloft.core.base.reflection.property.PropertyTokenizer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 对reflector的一层封装,更加方便的获取一个Class对象中geter和setter的各种信息
@@ -32,6 +35,7 @@ public class MetaClass {
         return new MetaClass(type, reflectorFactory);
     }
 
+
     //通过名称获取本身的一个field的MetaClass
     public MetaClass metaClassForProperty(String name) {
         Class<?> propType = reflector.getGetterType(name);
@@ -46,6 +50,7 @@ public class MetaClass {
 
     /**
      * 添加驼峰写法的过滤
+     *
      * @param name
      * @param useCamelCaseMapping
      * @return
@@ -156,6 +161,21 @@ public class MetaClass {
         }
     }
 
+    public Invoker getMethod(String name, Class<?>[] paramType) {
+        List<Invoker> allMethod = reflector.getMethod(name);
+        for(Invoker invoker : allMethod){
+            if(isInMethod(invoker,paramType)){
+                return invoker;
+            }
+        }
+        return null;
+    }
+
+    public boolean isInMethod(Invoker invokers, Class<?>[] paramType) {
+        Class<?>[] params = invokers.getParamType();
+        return Arrays.equals(params,paramType);
+    }
+
     public Invoker getGetInvoker(String name) {
         return reflector.getGetInvoker(name);
     }
@@ -185,6 +205,10 @@ public class MetaClass {
 
     public boolean hasDefaultConstructor() {
         return reflector.hasDefaultConstructor();
+    }
+
+    public Class<?> getType() {
+        return this.reflector.getType();
     }
 
 }
