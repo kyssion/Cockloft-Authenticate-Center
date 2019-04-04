@@ -588,4 +588,8 @@ public class Reflector {
     public Constructor<?>[] getOtherConstructor() {
         return otherConstructor;
     }
+
+    public List<Invoker> getMethod(String methodName) {
+        return allMethod.get(methodName);
+    }
 }
