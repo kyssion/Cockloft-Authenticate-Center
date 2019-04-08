@@ -7,13 +7,14 @@ version '1.0-SNAPSHOT'
 
 sourceCompatibility = 11
 
-repositories {
-    mavenCentral()
-}
-
 //子模块配置
 allprojects {
     apply plugin: 'java'
+    repositories {
+        mavenLocal()
+        jcenter()
+        mavenCentral()
+    }
     //配置依赖
     dependencies {
         compile 'mysql:mysql-connector-java:5.1.47'

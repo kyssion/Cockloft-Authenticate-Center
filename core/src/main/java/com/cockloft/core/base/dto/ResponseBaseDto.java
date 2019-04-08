@@ -3,7 +3,6 @@ package com.cockloft.core.base.dto;
 import com.cockloft.core.base.except.AuthenticateExcept;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseBaseDto extends BaseDto {
 
