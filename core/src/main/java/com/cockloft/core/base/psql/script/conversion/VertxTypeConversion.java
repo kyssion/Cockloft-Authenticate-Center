@@ -1,7 +1,5 @@
 package com.cockloft.core.base.psql.script.conversion;
 
-import com.cockloft.core.base.reflection.meta.MetaObject;
-import com.fasterxml.jackson.core.type.TypeReference;
 import io.vertx.ext.sql.ResultSet;
 
 
@@ -23,7 +21,6 @@ public class VertxTypeConversion<T,S> implements TypeConversion<T,S> {
             return null;
         }
         ResultSet item = (ResultSet) s;
-        MetaObject metaObject = MetaObject.forObject(this.returnInfo);
         return returnInfo;
     }
 }

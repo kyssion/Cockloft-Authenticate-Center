@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.lang.reflect.TypeVariable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,12 +20,22 @@ public class RefenceTest {
         String json = mapper.writeValueAsString(map);
         Map<String, TestItem> map1 = mapper.readValue(json, new TypeReference< HashMap<String, TestItem>>(){});
         System.out.println(map1.get("item").getName());
+        String s= testItem.Test("",new TTT<String>());
     }
+}
+
+class TTT<T>{
+    T name;
 }
 
 class TestItem {
     private String name;
     private String age;
+
+    public <T> T Test(Object t ,TTT ite){
+        Class<T> ttclass = (Class<T>) ite.getClass();
+        return (T) t;
+    }
 
     public String getName() {
         return name;
