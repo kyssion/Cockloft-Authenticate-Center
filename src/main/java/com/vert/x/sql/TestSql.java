@@ -2,6 +2,7 @@ package com.vert.x.sql;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonArray;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.ResultSet;
 import io.vertx.ext.sql.SQLClient;
@@ -22,8 +23,8 @@ public class TestSql {
         druidDataSource.configFromPropety(properties);
         SQLClient client = JDBCClient.create(vertx, druidDataSource);
         client.getConnection(res->{
+            res.result();
         });
-
         client.query("SELECT * FROM App", ar -> {
             if (ar.succeeded()) {
                 ResultSet result = ar.result();
