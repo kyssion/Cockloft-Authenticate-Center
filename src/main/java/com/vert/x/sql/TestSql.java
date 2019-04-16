@@ -33,8 +33,6 @@ public class TestSql {
                 // Failed!
                 System.out.println("failed");
             }
-            // NOTE that you don't need to worry about
-            // the connection management (e.g.: close)
         });
     }
 }
