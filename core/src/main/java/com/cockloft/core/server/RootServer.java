@@ -1,12 +1,11 @@
-package com.cockloft.authenticate.server;
+package com.cockloft.core.server;
 
-import com.cockloft.core.server.Server;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
 
-public class RegisterServer extends Server {
+public class RootServer extends Server{
 
-    public RegisterServer(String path, HttpMethod method) throws Exception {
+    public RootServer(String path, HttpMethod method) throws Exception {
         super(path, method);
     }
 
@@ -14,5 +13,4 @@ public class RegisterServer extends Server {
     public void doServer(HttpServerRequest httpServerRequest) {
 
     }
-
 }

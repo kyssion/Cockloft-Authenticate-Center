@@ -1,7 +1,7 @@
 package com.cockloft.authenticate.dto.request;
 
 
-import com.cockloft.core.base.dto.BaseDto;
+import com.cockloft.core.dto.BaseDto;
 
 public class AccessTokenReq extends BaseDto {
 

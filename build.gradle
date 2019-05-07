@@ -24,6 +24,7 @@ allprojects {
         implementation ('io.vertx:vertx-codegen:3.6.3')
         implementation ('org.apache.logging.log4j:log4j-slf4j-impl:2.11.1')
         implementation ('commons-codec:commons-codec:1.11')
+        implementation ('org.k-sql:k-sql-script:1.0-SNAPSHOT')
         testCompile group: 'junit', name: 'junit', version: '4.12'
     }
 }

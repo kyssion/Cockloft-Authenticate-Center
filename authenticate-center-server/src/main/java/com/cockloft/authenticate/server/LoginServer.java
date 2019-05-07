@@ -1,7 +1,7 @@
 package com.cockloft.authenticate.server;
 
 import com.cockloft.authenticate.po.UserItem;
-import com.cockloft.core.base.server.Server;
+import com.cockloft.core.server.Server;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.json.JsonObject;
