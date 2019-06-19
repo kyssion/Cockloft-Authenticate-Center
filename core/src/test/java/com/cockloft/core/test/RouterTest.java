@@ -1,6 +1,5 @@
 package com.cockloft.core.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
 import java.util.HashSet;

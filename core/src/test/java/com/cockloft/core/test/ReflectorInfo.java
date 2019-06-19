@@ -1,8 +1,7 @@
 package com.cockloft.core.test;
 
-import com.cockloft.core.base.psql.script.conversion.VertxTypeConversion;
-import io.vertx.ext.sql.ResultSet;
 
+import java.sql.ResultSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,8 +14,6 @@ public class ReflectorInfo {
         item.setItem2(item2);
         item.setName("name");
         item.setAge("333");
-        VertxTypeConversion<Item,ResultSet> vertxTypeConversion = new VertxTypeConversion<>();
-        item = vertxTypeConversion.concersion(new ResultSet());
         System.out.println(item.getName());
     }
 }
