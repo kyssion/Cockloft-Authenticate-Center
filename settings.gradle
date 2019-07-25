@@ -1,7 +1,0 @@
-rootProject.name = 'Cockloft-User-Authenticate-Center'
-include 'authenticate-center-server'
-include 'authenticate-center-admin'
-include 'sso-cli'
-include 'sso-server'
-include 'core'
-
