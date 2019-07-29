@@ -63,3 +63,11 @@
 ## 开源协议和授权
 
 oot is Open Source software released under the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0.html).
+
+##  计划安排
+
+1. 一套路由机制
+2. 针对handle的抽象
+3. 集成k-sql-script脚本编辑器
+
+
