@@ -56,6 +56,10 @@
  
  当用户在使用code换取accessToken的过程中,要带上这个被认证系统的唯一id和对应的密码,并且相互之间的交互必须使用HTTPS加密,认证服务器在进行认证的时候需要校验id和密码是否匹配,code和Id时候匹配,如果通过,证明验证合法,这样就保证用户信息不泄露
 
+## 进一步解释Oauth2.0 流程图
+
+![](readme/img/oauth2/oauth3.png)
+
 ## 开源协议和授权
 
 oot is Open Source software released under the [Apache 2.0 license](https://www.apache.org/licenses/LICENSE-2.0.html).
