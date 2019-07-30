@@ -1,6 +1,7 @@
 package com.vert.x.net.http;
 
 import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 
@@ -8,7 +9,19 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class WebHttpServer {
+
     public static void main(String[] args) {
+        Vertx vertx = Vertx.vertx();
+        HttpServerOptions options = new HttpServerOptions()
+                .setMaxWebsocketFrameSize(1000000)
+                .setLogActivity(true);
+        HttpServer httpServer = vertx.createHttpServer(options);
+        httpServer.requestHandler(req -> {
+
+        });
+    }
+
+    public static void main1(String[] args) {
         Vertx vertx = Vertx.vertx();
         HttpServerOptions options = new HttpServerOptions()
                 .setMaxWebsocketFrameSize(1000000)
@@ -41,4 +54,5 @@ public class WebHttpServer {
         }
         System.out.println("----------------------------------");
     }
+
 }

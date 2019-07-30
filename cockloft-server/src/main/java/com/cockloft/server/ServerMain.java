@@ -1,10 +1,14 @@
 package com.cockloft.server;
 
+import io.vertx.core.MultiMap;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
+
 
 public class ServerMain {
 
@@ -19,7 +23,17 @@ public class ServerMain {
         HttpServer httpServer = vertx.createHttpServer(options);
 
         httpServer.requestHandler(req -> {
-            
+            MultiMap multiMap = req.params();
+            req.path();
+            req.absoluteURI();
+            req.uri();
+            req.method();
+
+            req.bodyHandler(buff -> {
+                System.out.println("sdfsdf");
+                System.out.println(buff.toString());
+            });
+            req.response().end("dfsdfsdf");
         });
 
         httpServer.listen(port, res -> {
