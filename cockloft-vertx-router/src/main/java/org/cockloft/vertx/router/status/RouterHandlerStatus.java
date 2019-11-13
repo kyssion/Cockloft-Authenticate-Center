@@ -1,10 +1,10 @@
 package org.cockloft.vertx.router.status;
 
-public enum RouterContextStatus {
+public enum RouterHandlerStatus {
     BLOCK("block",0),NO_BLOCK("no_block",1);
     private String statusName;
     private int code;
-    RouterContextStatus(String statusName,int code){
+    RouterHandlerStatus(String statusName,int code){
         this.statusName = statusName;
         this.code = code;
     }

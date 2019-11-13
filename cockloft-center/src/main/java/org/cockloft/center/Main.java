@@ -27,6 +27,14 @@ public class Main {
             res.response().end("hello world");
 
         });
+
+        workerExecutor.executeBlocking(
+                (ttt)->{
+
+                },(res)->{
+                    res.
+                }
+        );
         httpServer.listen(8080,(vo)->{
            if(vo.succeeded()){
                logger.info("cockloft starting succuess ! port : {}",8080);
