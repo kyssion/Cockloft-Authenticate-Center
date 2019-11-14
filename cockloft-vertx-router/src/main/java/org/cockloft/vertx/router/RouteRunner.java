@@ -37,7 +37,6 @@ public class RouteRunner {
         if(routeHandle==null){
             return;
         }
-
         switch (routeHandle.getStatus()){
             case BLOCK:
                 this.vertx.executeBlocking((promise)->{

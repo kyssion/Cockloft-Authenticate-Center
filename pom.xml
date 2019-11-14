@@ -13,6 +13,7 @@
         <module>user-authentication</module>
         <module>cockloft-center</module>
         <module>cockloft-vertx-router</module>
+        <module>cockloft-common</module>
     </modules>
     <properties>
         <vertx.version>3.8.3</vertx.version>
