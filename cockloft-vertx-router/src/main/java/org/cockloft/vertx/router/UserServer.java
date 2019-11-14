@@ -9,10 +9,14 @@ public class UserServer {
         Vertx vertx = Vertx.vertx();
         Router router = Router.router(vertx);
         router.route("/test", HttpMethod.GET).handle((context)->{
-           context.getResponse().end("hello test1");
-        });
-        router.route("/test2", HttpMethod.GET).handle((context)->{
-            context.getResponse().end("hello test2");
+            context.getResponse().setChunked(true);
+            context.getResponse().write("hello test1");
+            context.next();
+        }).handle((context)->{
+            context.getResponse().end("test111");
+            int i = 1/0;
+        }).errorHandle((ex)->{
+            System.out.println(ex.toString());
         });
         HttpServer httpServer = vertx.createHttpServer();
         httpServer.requestHandler(router).listen(8080);

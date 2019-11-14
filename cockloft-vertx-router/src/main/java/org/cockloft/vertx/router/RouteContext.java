@@ -14,6 +14,10 @@ public class RouteContext {
         return request;
     }
 
+    public void setRouteRunner(RouteRunner routeRunner) {
+        this.routeRunner = routeRunner;
+    }
+
     public void setRequest(HttpServerRequest request) {
         this.request = request;
     }

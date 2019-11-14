@@ -49,6 +49,8 @@ public class Router implements Handler<HttpServerRequest> {
         }
         if(route.getHttpMethod()==request.method()){
             RouteRunner routeRunner = new RouteRunner(this.vertx,route,request);
+            //设置全局异常捕获request.exceptionHandler(route.getThrowableHandle());
+
             routeRunner.run();
         }else{
             request.response().setStatusCode(400);
