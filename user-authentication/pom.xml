@@ -14,8 +14,8 @@
     <dependencies>
         <dependency>
             <groupId>org.authenticate-center</groupId>
-            <artifactId>cockloft-vertx-router</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>cockloft-common</artifactId>
+            <version>${version}</version>
         </dependency>
     </dependencies>
 

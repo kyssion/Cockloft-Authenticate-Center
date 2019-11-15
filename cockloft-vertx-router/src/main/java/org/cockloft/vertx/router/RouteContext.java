@@ -3,6 +3,8 @@ package org.cockloft.vertx.router;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.mysqlclient.MySQLPool;
+import org.cockloft.vertx.router.example.DataAccessException;
 
 public class RouteContext {
     private HttpServerRequest request;
@@ -48,5 +50,9 @@ public class RouteContext {
 
     public void next(){
         this.routeRunner.next();
+    }
+
+    public MySQLPool getMySQLPool() throws DataAccessException {
+        return this.getRoute().getRouter().getMySQLPool();
     }
 }

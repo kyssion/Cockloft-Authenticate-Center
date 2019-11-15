@@ -5,6 +5,9 @@ import io.vertx.core.Vertx;
 import io.vertx.core.WorkerExecutor;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
+import io.vertx.mysqlclient.MySQLPool;
+import org.cockloft.vertx.router.example.DataAccessException;
+import org.cockloft.vertx.router.status.DataAccessStatus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,13 +15,11 @@ import java.util.Map;
 public class Router implements Handler<HttpServerRequest> {
     private Vertx vertx;
     private WorkerExecutor workerExecutor;
-
     private Map<String, Route> routePathMap;
-
+    private MySQLPool mySQLPool;
     private Router() {
         super();
     }
-
     private Router(Vertx vertx) {
         this.vertx = vertx;
         this.routePathMap = new HashMap<>();
@@ -55,5 +56,20 @@ public class Router implements Handler<HttpServerRequest> {
             request.response().setStatusCode(400);
             request.response().end();
         }
+    }
+
+    public void initMysqlConnectionPool(String connectUri) throws DataAccessException {
+        if(this.vertx!=null) {
+            MySQLPool pool = MySQLPool.pool(this.vertx, connectUri);
+            this.mySQLPool = pool;
+        }
+        throw new DataAccessException(DataAccessException.NO_INIT_VERTX,DataAccessStatus.NO_VERT_FOR_CONNECTION_POOL);
+    }
+
+    public MySQLPool getMySQLPool() throws DataAccessException {
+        if(this.mySQLPool!=null) {
+            return mySQLPool;
+        }
+        throw new DataAccessException(DataAccessException.NO_INIT_MYSQL_POOL,DataAccessStatus.NO_INIT_CONNECTION_POOL);
     }
 }

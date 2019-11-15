@@ -11,5 +11,11 @@
 
     <artifactId>cockloft-common</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>org.authenticate-center</groupId>
+            <artifactId>cockloft-vertx-router</artifactId>
+            <version>${version}</version>
+        </dependency>
+    </dependencies>
 </project>

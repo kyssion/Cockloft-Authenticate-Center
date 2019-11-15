@@ -5,16 +5,18 @@ import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import org.cockloft.vertx.router.Router;
+import org.cockloft.vertx.router.example.DataAccessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 public class CockLoftMain {
     private static Logger logger = LoggerFactory.getLogger(CockLoftMain.class);
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DataAccessException {
         VertxOptions vertxOptions = new VertxOptions();
         Vertx vertx = Vertx.vertx(vertxOptions);
         Router router = Router.router(vertx);
+        router.initMysqlConnectionPool("sdfsdf");
         HttpServerOptions httpServerOptions = new HttpServerOptions();
         HttpServer server = vertx.createHttpServer(httpServerOptions);
         server.requestHandler(router).listen(8080,(res)->{
