@@ -12,6 +12,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class RamCache implements Cache{
 
+    private static RamCache ramCache = new RamCache();
+
+    public static RamCache getRam(){
+        return  ramCache;
+    }
+
     private Map<String,String> keyValue;
     private Set<String> keys;
 

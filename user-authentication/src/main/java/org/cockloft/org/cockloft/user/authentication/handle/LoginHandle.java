@@ -4,6 +4,7 @@ import io.vertx.mysqlclient.MySQLPool;
 import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.RowSet;
 import io.vertx.sqlclient.Tuple;
+import org.cockloft.common.cache.RamCache;
 import org.cockloft.common.data.ResponseData;
 import org.cockloft.common.data.ResponseRes;
 import org.cockloft.common.data.UserLoginData;
@@ -13,6 +14,7 @@ import io.netty.util.internal.StringUtil;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.json.Json;
+import org.cockloft.common.util.TokenUtil;
 import org.cockloft.vertx.router.RouteContext;
 import org.cockloft.vertx.router.example.DataAccessException;
 
@@ -39,7 +41,8 @@ public class LoginHandle implements Handler<RouteContext> {
                                     int num = row.getInteger("num");
                                     //If the return num value is greater than 1, it means that this user exists.
                                     if (num == 0) {
-                                        ResponseData responseData = ResponseData.create(StatusEnum.OK, ResponseRes.USER_INFORMATIONT_FINDE);
+                                        String token = this.createLoginTokenAddSaveInCache(userLoginData.getName(),userLoginData.getPasswordMd5());
+                                        ResponseData responseData = ResponseData.create(StatusEnum.OK,token);
                                         request.response().end(Json.encode(responseData));
                                     } else {
                                         ResponseData responseData = ResponseData.create(StatusEnum.OK, ResponseRes.USER_INFORMATION_NOT_FINDE);
@@ -60,5 +63,11 @@ public class LoginHandle implements Handler<RouteContext> {
                 request.response().end(Json.encode(responseData));
             }
         });
+    }
+
+    private String createLoginTokenAddSaveInCache(String userId,String password){
+        String token = TokenUtil.getUserLoginAccessToken(userId,password);
+        RamCache.getRam().addKV(userId,token);
+        return token;
     }
 }
