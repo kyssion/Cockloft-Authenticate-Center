@@ -5,7 +5,9 @@ import io.vertx.core.Vertx;
 import io.vertx.core.WorkerExecutor;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
+import io.vertx.mysqlclient.MySQLConnectOptions;
 import io.vertx.mysqlclient.MySQLPool;
+import io.vertx.sqlclient.PoolOptions;
 import org.cockloft.vertx.router.example.DataAccessException;
 import org.cockloft.vertx.router.status.DataAccessStatus;
 
@@ -60,10 +62,18 @@ public class Router implements Handler<HttpServerRequest> {
 
     public void initMysqlConnectionPool(String connectUri) throws DataAccessException {
         if(this.vertx!=null) {
-            MySQLPool pool = MySQLPool.pool(this.vertx, connectUri);
-            this.mySQLPool = pool;
+            this.mySQLPool = MySQLPool.pool(this.vertx, connectUri);
         }
         throw new DataAccessException(DataAccessException.NO_INIT_VERTX,DataAccessStatus.NO_VERT_FOR_CONNECTION_POOL);
+    }
+
+    public void initMysqlConnectionPool(MySQLConnectOptions mySQLConnectOptions){
+        if(this.vertx!=null){
+            PoolOptions poolOptions = new PoolOptions()
+                    .setMaxSize(5);
+            this.mySQLPool = MySQLPool.pool(vertx,mySQLConnectOptions, poolOptions);
+
+        }
     }
 
     public MySQLPool getMySQLPool() throws DataAccessException {
