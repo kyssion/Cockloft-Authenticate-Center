@@ -20,5 +20,10 @@
             <artifactId>user-management</artifactId>
             <version>${version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-web</artifactId>
+            <version>3.8.3</version>
+        </dependency>
     </dependencies>
 </project>

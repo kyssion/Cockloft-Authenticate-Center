@@ -2,6 +2,7 @@ package org.cockloft.vertx.router;
 
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpMethod;
+import org.cockloft.vertx.router.handlers.RouterHandler;
 import org.cockloft.vertx.router.status.RouterHandlerStatus;
 
 import java.util.ArrayList;
@@ -10,20 +11,21 @@ import java.util.List;
 public class Route {
     static class RouteHandle{
         private RouterHandlerStatus status;
-        private Handler<RouteContext> handler;
+        private RouterHandler<RouteContext> handler;
 
-        private RouteHandle(RouterHandlerStatus status,Handler<RouteContext> handler){
+        private RouteHandle(RouterHandlerStatus status,RouterHandler<RouteContext> handler){
             this.status = status;
             this.handler = handler;
         }
+
         RouterHandlerStatus getStatus() {
             return status;
         }
-        Handler<RouteContext> getHandler() {
+        RouterHandler<RouteContext> getHandler() {
             return handler;
         }
     }
-    static class ErrorRouteContext{
+    public static class ErrorRouteContext{
         private RouteContext routeContext;
         private Throwable throwable;
         public ErrorRouteContext(Throwable throwable,RouteContext routeContext){
@@ -57,12 +59,12 @@ public class Route {
         return handlers;
     }
 
-    public Route handle(Handler<RouteContext> handler){
+    public Route handle(RouterHandler<RouteContext> handler){
         Route.RouteHandle routeHandle = new RouteHandle(RouterHandlerStatus.NO_BLOCK, handler);
         this.handlers.add(routeHandle);
         return this;
     }
-    public Route blockHandle(Handler<RouteContext> handler){
+    public Route blockHandle(RouterHandler<RouteContext> handler){
         Route.RouteHandle routeHandle = new RouteHandle(RouterHandlerStatus.BLOCK, handler);
         this.handlers.add(routeHandle);
         return this;
@@ -72,14 +74,11 @@ public class Route {
         return this;
     }
 
-    public Handler<ErrorRouteContext> getThrowableHandle(){
+    public Handler<ErrorRouteContext> getErrorHandle(){
         return this.errorHandle;
     }
 
     public Router getRouter() {
         return router;
     }
-
-
-
 }

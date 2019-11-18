@@ -2,30 +2,31 @@ package org.cockloft.vertx.router;
 
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
-import io.vertx.core.WorkerExecutor;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.mysqlclient.MySQLConnectOptions;
 import io.vertx.mysqlclient.MySQLPool;
 import io.vertx.sqlclient.PoolOptions;
 import org.cockloft.vertx.router.example.DataAccessException;
+import org.cockloft.vertx.router.handlers.RouterHandler;
 import org.cockloft.vertx.router.status.DataAccessStatus;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Router implements Handler<HttpServerRequest> {
     private Vertx vertx;
-    private WorkerExecutor workerExecutor;
     private Map<String, Route> routePathMap;
     private MySQLPool mySQLPool;
+    private Handler<Route.ErrorRouteContext> errorHandle;
     private Router() {
         super();
     }
     private Router(Vertx vertx) {
         this.vertx = vertx;
         this.routePathMap = new HashMap<>();
-        this.workerExecutor = vertx.createSharedWorkerExecutor("router-block-executor");
     }
 
     public static Router router(Vertx vertx) {
@@ -39,6 +40,9 @@ public class Router implements Handler<HttpServerRequest> {
     public Route route(String path, HttpMethod method) {
         Route route = new Route(this,method);
         this.routePathMap.put(path,route);
+        if(this.errorHandle!=null){
+            route.errorHandle(this.errorHandle);
+        }
         return route;
     }
 
@@ -51,9 +55,26 @@ public class Router implements Handler<HttpServerRequest> {
             return;
         }
         if(route.getHttpMethod()==request.method()){
-            RouteRunner routeRunner = new RouteRunner(this.vertx,route,request);
-            //设置全局异常捕获request.exceptionHandler(route.getThrowableHandle());
-            routeRunner.run();
+            StringBuilder body = new StringBuilder();
+            request.handler((buf)->{
+               body.append(buf.toString());
+            });
+            request.endHandler((end)->{
+                try {
+                    RouteRunner routeRunner = new RouteRunner(vertx, route);
+                    RouteContext context = new RouteContext(routeRunner);
+                    context.setRequest(request);
+                    context.setResponse(request.response());
+                    context.setBody(body.toString());
+                    context.setMultiMap(request.formAttributes());
+                    context.setParams(request.params());
+                    context.setMySQLPool(this.getMySQLPool());
+                    routeRunner.setRouteContext(context);
+                    routeRunner.run();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
         }else{
             request.response().setStatusCode(400);
             request.response().end();
@@ -81,5 +102,9 @@ public class Router implements Handler<HttpServerRequest> {
             return mySQLPool;
         }
         throw new DataAccessException(DataAccessException.NO_INIT_MYSQL_POOL,DataAccessStatus.NO_INIT_CONNECTION_POOL);
+    }
+
+    public void setErrorHandle(Handler<Route.ErrorRouteContext> errorHandle) {
+        this.errorHandle = errorHandle;
     }
 }

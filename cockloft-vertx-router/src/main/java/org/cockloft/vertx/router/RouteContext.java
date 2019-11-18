@@ -1,23 +1,41 @@
 package org.cockloft.vertx.router;
 
-import io.vertx.core.Vertx;
+import io.vertx.core.MultiMap;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.mysqlclient.MySQLPool;
-import org.cockloft.vertx.router.example.DataAccessException;
 
 public class RouteContext {
     private HttpServerRequest request;
     private HttpServerResponse response;
-    private Vertx vertx;
-    private Route route;
-    private RouteRunner routeRunner;
-    public HttpServerRequest getRequest() {
-        return request;
+    private String body;
+    private MultiMap multiMap;
+    private String path;
+    private MultiMap params;
+    private MySQLPool mySQLPool;
+    private final RouteRunner routeRunner;
+    public RouteContext(RouteRunner routeRunner){
+        this.routeRunner = routeRunner;
     }
 
-    public void setRouteRunner(RouteRunner routeRunner) {
-        this.routeRunner = routeRunner;
+    public MySQLPool getMySQLPool() {
+        return mySQLPool;
+    }
+
+    public void setMySQLPool(MySQLPool mySQLPool) {
+        this.mySQLPool = mySQLPool;
+    }
+
+    public MultiMap getParams() {
+        return params;
+    }
+
+    public void setParams(MultiMap params) {
+        this.params = params;
+    }
+
+    public HttpServerRequest getRequest() {
+        return request;
     }
 
     public void setRequest(HttpServerRequest request) {
@@ -32,27 +50,31 @@ public class RouteContext {
         this.response = response;
     }
 
-    public Vertx getVertx() {
-        return vertx;
+    public String getBody() {
+        return body;
     }
 
-    public void setVertx(Vertx vertx) {
-        this.vertx = vertx;
+    public void setBody(String body) {
+        this.body = body;
     }
 
-    public Route getRoute() {
-        return route;
+    public MultiMap getMultiMap() {
+        return multiMap;
     }
 
-    public void setRoute(Route route) {
-        this.route = route;
+    public void setMultiMap(MultiMap multiMap) {
+        this.multiMap = multiMap;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public void next(){
-        this.routeRunner.next();
-    }
-
-    public MySQLPool getMySQLPool() throws DataAccessException {
-        return this.getRoute().getRouter().getMySQLPool();
+        routeRunner.next();
     }
 }
