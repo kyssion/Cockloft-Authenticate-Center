@@ -1,4 +1,4 @@
-package org.cockloft.common.data;
+package org.cockloft.common.data.entry;
 
 public class UserData {
     private int id;

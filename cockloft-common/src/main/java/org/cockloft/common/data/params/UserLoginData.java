@@ -1,4 +1,4 @@
-package org.cockloft.common.data;
+package org.cockloft.common.data.params;
 
 import io.netty.util.internal.StringUtil;
 import org.cockloft.common.util.MD5Util;
