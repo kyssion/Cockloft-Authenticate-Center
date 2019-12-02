@@ -44,6 +44,7 @@ public class CockLoftMain {
 
         router.route("/login", HttpMethod.POST).handle(new LoginHandle());
         router.route("/register", HttpMethod.POST).handle(new RegisterHandle());
+
         server.requestHandler(router
         ).listen(port,(res)->{
             if(res.succeeded()){
