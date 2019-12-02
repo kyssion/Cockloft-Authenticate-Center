@@ -17,6 +17,7 @@ public class AuthenticationHandle implements RouterHandler<RouteContext> {
         MultiMap urlParams = routeContext.getParams();
         String redirect = urlParams.get("redirect_url");
         String statusCode = urlParams.get("status_code");
+        String clientId = urlParams.get("clientID");
         response.putHeader("redirect_url",redirect);
         response.putHeader("status_code",statusCode);
 
