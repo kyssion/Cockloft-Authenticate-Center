@@ -1,27 +1,36 @@
 package org.cockloft.vertx.router.handlers;
 
-import org.cockloft.vertx.router.RouteContext;
+import io.vertx.core.Handler;
+import io.vertx.core.http.HttpServerRequest;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class StaticResouceRouter implements RouterHandler<RouteContext> {
+public class StaticResouceRouter implements Handler<HttpServerRequest> {
 
     private String staticPath="";
 
+    public StaticResouceRouter(String path){
+        this.staticPath = path;
+    }
+
     @Override
-    public void handle(RouteContext routeContext) {
-        String path = routeContext.getPath();
+    public void handle(HttpServerRequest request) {
+        String path = request.path().substring(1);
         if(!isLegitimateResources(path)){
-            routeContext.getResponse().end("no resource");
+            request.response().end("no resource");
         }
         InputStream inputStream = StaticResouceRouter.class.getClassLoader().getResourceAsStream(this.staticPath+path);
+        if(inputStream==null){
+            request.response().end();
+            return;
+        }
         byte[] bytes = new byte[126];
         StringBuilder builder = new StringBuilder();
         int length = 0;
         while(true){
             try {
-                if ((length=inputStream.read(bytes))==0){
+                if ((length=inputStream.read(bytes))==-1){
                     break;
                 }
                 builder.append(new String(bytes,0,length));
@@ -29,7 +38,7 @@ public class StaticResouceRouter implements RouterHandler<RouteContext> {
                 e.printStackTrace();
             }
         }
-        routeContext.getResponse().end(builder.toString());
+        request.response().end(builder.toString());
     }
 
     public boolean isLegitimateResources(String path){
@@ -44,13 +53,5 @@ public class StaticResouceRouter implements RouterHandler<RouteContext> {
             }
         }
         return index != -1;
-    }
-
-    public String getStaticPath() {
-        return staticPath;
-    }
-
-    public void setStaticPath(String staticPath) {
-        this.staticPath = staticPath;
     }
 }
