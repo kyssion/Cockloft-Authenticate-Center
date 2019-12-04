@@ -45,10 +45,8 @@ public class CockLoftMain {
         });
         HttpServerOptions httpServerOptions = new HttpServerOptions();
         HttpServer server = vertx.createHttpServer(httpServerOptions);
-
-//        router.route("/login", HttpMethod.POST).handle(new LoginHandle());
-//        router.route("/register", HttpMethod.POST).handle(new RegisterHandle());
-
+        router.route("/login", HttpMethod.POST).handle(new LoginHandle());
+        router.route("/register", HttpMethod.POST).handle(new RegisterHandle());
         router.ResourceRoute("");
         server.requestHandler(router
         ).listen(port,(res)->{
