@@ -9,7 +9,6 @@ import org.cockloft.common.data.ResponseData;
 import org.cockloft.common.data.ResponseRes;
 import org.cockloft.common.data.params.UserLoginData;
 import org.cockloft.common.enums.StatusEnum;
-import org.cockloft.common.example.UserLoginException;
 import io.netty.util.internal.StringUtil;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.json.Json;
