@@ -10,6 +10,8 @@ import org.cockloft.common.data.params.UserRegisterData;
 import org.cockloft.common.enums.StatusEnum;
 import org.cockloft.common.util.CacheUtil;
 import org.cockloft.common.util.MD5Util;
+import org.cockloft.common.util.TokenUtil;
+import org.cockloft.org.cockloft.user.authentication.sqls.UserSqlSet;
 import org.cockloft.vertx.router.RouteContext;
 import org.cockloft.vertx.router.example.DataAccessException;
 import org.cockloft.vertx.router.handlers.RouterHandler;
@@ -27,9 +29,9 @@ public class RegisterHandle implements RouterHandler<RouteContext> {
             long registerTime = System.currentTimeMillis();
             String passwdMD5 = MD5Util.encrypByMD5(registerData.getPasswd());
             Tuple tuple = Tuple.of(registerData.getUserId(),passwdMD5 ,registerData.getEmail(),registerData.getTel(),registerTime);
-            pool.preparedQuery("insert into user (`user_id`,`passwd`,`email`,`tel`,`register_time`) valuse (?,?,?,?,?)",tuple,(res)->{
+            pool.preparedQuery(UserSqlSet.insertUserSql,tuple,(res)->{
                 if (res.succeeded()) {
-                    String token = CacheUtil.createLoginTokenAddSaveInCache(registerData.getUserId(),passwdMD5);
+                    String token = TokenUtil.getUserLoginAccessToken(registerData.getUserId(),passwdMD5);
                     ResponseData responseData = ResponseData.create(StatusEnum.OK,token);
                     request.response().end(Json.encode(responseData));
                 } else {

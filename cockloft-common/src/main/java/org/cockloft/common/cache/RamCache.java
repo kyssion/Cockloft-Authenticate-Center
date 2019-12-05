@@ -47,6 +47,17 @@ public class RamCache implements Cache{
     }
 
     @Override
+    public boolean addMap(String key, Map<String, String> map) {
+        Map<String,String> valueMap= this.mapKv.get(key);
+        if(valueMap==null){
+            valueMap = new ConcurrentHashMap<>();
+            this.mapKv.put(key,valueMap);
+        }
+        valueMap.putAll(map);
+        return true;
+    }
+
+    @Override
     public String getV(String key) {
         String item = this.keyValue.get(key);
         if(item==null){

@@ -49,6 +49,9 @@ public class LoginHandle implements RouterHandler<RouteContext> {
 //                                String token = CacheUtil.createLoginTokenAddSaveInCache(userLoginData.getName(), userLoginData.getPasswordMd5());
                                 String token  = TokenUtil.getUserLoginAccessToken(userLoginData.getName(), userLoginData.getPasswordMd5());
                                 CacheUtil.saveTokenToUser(token,userLoginData.getName(),userLoginData.getPasswordMd5());
+
+                                //TODO 获取用户的i的信息
+
                                 response.putHeader("user_token",token);
                                 ResponseData responseData = ResponseData.create(StatusEnum.OK, token);
                                 request.response().end(Json.encode(responseData));
