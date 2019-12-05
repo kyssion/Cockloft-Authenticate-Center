@@ -5,6 +5,10 @@ public class MD5Util {
 
     private final static String[] hexArray = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
 
+    private MD5Util(){
+        super();
+    }
+
     public static String encrypByMD5(String originString) {
         try {
             //创建具有MD5算法的信息摘要

@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface Cache {
     boolean addKV(String key,String value) throws CacheException;
-    boolean addMap(String key, Map<String,String> value) throws CacheException;
+    boolean addMap(String key, String value1,String value2) throws CacheException;
     String getV(String key) throws CacheException;
     String getMv(String key,String vk) throws CacheException;
     Set<String> getKeys() throws CacheException;

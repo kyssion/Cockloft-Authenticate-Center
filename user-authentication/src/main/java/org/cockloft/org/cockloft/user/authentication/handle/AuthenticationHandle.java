@@ -20,6 +20,7 @@ public class AuthenticationHandle implements RouterHandler<RouteContext> {
         String clientId = urlParams.get("clientID");
         response.putHeader("redirect_url",redirect);
         response.putHeader("status_code",statusCode);
-
+        //TODO this need return login html
+        response.end();
     }
 }

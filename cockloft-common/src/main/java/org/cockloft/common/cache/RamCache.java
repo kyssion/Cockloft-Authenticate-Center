@@ -20,11 +20,13 @@ public class RamCache implements Cache{
 
     private Map<String,String> keyValue;
     private Set<String> keys;
+    private Map<String,Map<String,String>> mapKv;
 
     public RamCache(){
         super();
         this.keys = new ConcurrentHashSet<>();
         this.keyValue = new ConcurrentHashMap<>();
+        this.mapKv = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -34,8 +36,14 @@ public class RamCache implements Cache{
     }
 
     @Override
-    public boolean addMap(String key, Map<String, String> value) throws CacheException {
-        throw new CacheException(CacheException.CACHE_DISABLE, StatusEnum.CACHE_ERROR);
+    public boolean addMap(String key, String value1,String value2) {
+        Map<String,String> valueMap= this.mapKv.get(key);
+        if(valueMap==null){
+            valueMap = new ConcurrentHashMap<>();
+            this.mapKv.put(key,valueMap);
+        }
+        valueMap.put(value1,value2);
+        return true;
     }
 
     @Override
