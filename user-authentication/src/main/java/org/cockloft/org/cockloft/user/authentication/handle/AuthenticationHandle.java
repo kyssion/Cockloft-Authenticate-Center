@@ -1,7 +1,6 @@
 package org.cockloft.org.cockloft.user.authentication.handle;
 
 import io.vertx.core.MultiMap;
-import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import org.cockloft.common.example.BackstageException;
 import org.cockloft.common.util.CacheUtil;
