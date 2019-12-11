@@ -33,6 +33,7 @@ public class CockLoftMain {
         MySQLConnectOptions mySQLConnectOptions = new MySQLConnectOptions()
                 .setHost("106.12.74.33").setDatabase("user_center").setPort(3306)
                 .setUser("rd").setPassword("14159265jkl");
+
         router.initMysqlConnectionPool(mySQLConnectOptions);
         router.setErrorHandle((errorContext)->{
             Throwable throwable = errorContext.getThrowable();
